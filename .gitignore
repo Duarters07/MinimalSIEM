@@ -1,0 +1,21 @@
+# --- secrets: never commit the real environment file -------------------------
+.env
+*.env
+!.env.example
+
+# --- certificates / keys (generated inside the certs volume; never in git) ---
+*.crt
+*.key
+*.pem
+*.p12
+*.jks
+certs/
+
+# --- student work-in-progress that should not land in this repo --------------
+logs/
+
+# --- editors / OS -----------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+.DS_Store

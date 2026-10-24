@@ -126,7 +126,26 @@ services:
     networks:
       - siem-network
 
-
+  # ============================================
+  # Filebeat — o coletor.
+  # ============================================
+  filebeat:
+    container_name: minimal-siem-filebeat
+    image: docker.elastic.co/beats/filebeat:${STACK_VERSION}
+    profiles: ["collector"]
+    user: root
+    volumes:
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - certs:/usr/share/filebeat/certs:ro
+      - ${LOGS_DIR:-../SIEMgen/logs}:/logs:ro
+      - filebeatdata:/usr/share/filebeat/data
+    environment:
+      - ELASTIC_PASSWORD=${ELASTIC_PASSWORD}
+      - BEAT_STRICT_PERMS=false
+    restart: unless-stopped
+    mem_limit: 1073741824
+    networks:
+      - siem-network
 
 # ============================================
 # Networks
@@ -145,4 +164,6 @@ volumes:
   esdata01:
     driver: local
   kibanadata:
+    driver: local
+  filebeatdata:
     driver: local
